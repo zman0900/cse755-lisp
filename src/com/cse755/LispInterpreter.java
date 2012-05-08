@@ -22,7 +22,6 @@ public class LispInterpreter {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//Tokenizer t = new Tokenizer(new InputStreamReader(System.in));
 		LispLexer lex = new LispLexer(new InputStreamReader(System.in));
 		
 		try {
