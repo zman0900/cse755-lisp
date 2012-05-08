@@ -27,7 +27,7 @@ MAINFILE = com/cse755/LispInterpreter.java
 # The first target is the one that is executed when you invoke
 # "make". 
 
-all : archive doc
+all : archive
 	$(MAKE) clean-build
 
 build :
@@ -40,7 +40,7 @@ archive : build
 	chmod +x Runfile
 
 doc : clean-doc
-	$(JAVADOC) -private -sourcepath $(SOURCE) -d $(DOC) $(MAINPACKAGE)
+	$(JAVADOC) -sourcepath $(SOURCE) -d $(DOC) $(MAINPACKAGE)
 
 clean : clean-build clean-jar
 	

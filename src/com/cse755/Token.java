@@ -19,7 +19,8 @@ public class Token {
 		WORD,
 		DOT,
 		OPEN_PAREN,
-		CLOSE_PAREN
+		CLOSE_PAREN,
+		WHITESPACE
 	}
 	
 	/**
@@ -50,28 +51,52 @@ public class Token {
 	public final String wordVal;
 
 	/**
-	 * @param value Literal input value
-	 * @param type Kind of token
+	 * Create a new Token of type WORD.
+	 * 
+	 * @param value Word that the Token represents
 	 * @param lineNumber Source line number
 	 */
-	public Token(String value, TokenType type, int lineNumber) {
+	public Token(String value, int lineNumber) {
 		this.value = value;
+		this.type = TokenType.WORD;
+		this.lineNumber = lineNumber;
+		this.numVal = 0;
+		this.wordVal = this.value.toUpperCase(Locale.ENGLISH);
+	}
+	
+	/**
+	 * Create a new Token of type NUMBER.
+	 * 
+	 * @param value Number the Token represents
+	 * @param lineNumber Source line number
+	 */
+	public Token(int value, int lineNumber) {
+		this.value = Integer.toString(value);
+		this.type = TokenType.NUMBER;
+		this.lineNumber = lineNumber;
+		this.numVal = value;
+		this.wordVal = null;
+	}
+	
+	/**
+	 * Create a new non WORD or NUMBER Token.
+	 * 
+	 * @param value Value the Token represents
+	 * @param type Type of the Token
+	 * @param lineNumber Source line number
+	 */
+	public Token(char value, TokenType type, int lineNumber) {
+		this.value = String.valueOf(value);
 		this.type = type;
 		this.lineNumber = lineNumber;
-		
-		switch (this.type) {
-		case NUMBER:
-			this.numVal = Integer.parseInt(this.value);
-			this.wordVal = null;
-			break;
-		case WORD:
-			this.numVal = 0;
-			this.wordVal = this.value.toUpperCase(Locale.ENGLISH);
-			break;
-		default:
-			this.numVal = 0;
-			this.wordVal = null;
-			break;
-		}
+		this.numVal = 0;
+		this.wordVal = null;
+	}
+
+	@Override
+	public String toString() {
+		return "Token [value=" + value + ", type=" + type + ", lineNumber="
+				+ lineNumber + ", numVal=" + numVal + ", wordVal=" + wordVal
+				+ "]";
 	}
 }

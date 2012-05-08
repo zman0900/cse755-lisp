@@ -1,11 +1,12 @@
-/**
- * 
- */
 package com.cse755;
 
+import java.io.InputStreamReader;
+import java.text.ParseException;
+
 /**
- * @author dan
- *
+ * The actual interpreter.
+ * 
+ * @author Dan Ziemba
  */
 public class LispInterpreter {
 
@@ -17,11 +18,20 @@ public class LispInterpreter {
 	}
 
 	/**
-	 * @param args
+	 * @param args Not used
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		//Tokenizer t = new Tokenizer(new InputStreamReader(System.in));
+		LispLexer lex = new LispLexer(new InputStreamReader(System.in));
+		
+		try {
+			while (lex.tryAdvance()) {
+				System.out.println(lex.getToken());
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
