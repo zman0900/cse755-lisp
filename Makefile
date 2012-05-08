@@ -1,8 +1,8 @@
-# Java compiler
+# Java programs
 JAVAC = javac
-
-# Java archiver
 JAR = jar
+JAVADOC = javadoc
+JAVA = java
 
 # Java compiler flags
 JAVAFLAGS = -g
@@ -16,14 +16,18 @@ BUILD = build
 # Output jar
 OUT = lisp.jar
 
+# Documentation output
+DOC = doc
+
 # Main class
-MAIN = com.cse755.LispInterpreter
+MAINCLASS = LispInterpreter
+MAINPACKAGE = com.cse755
 MAINFILE = com/cse755/LispInterpreter.java
 
 # The first target is the one that is executed when you invoke
 # "make". 
 
-all : archive
+all : archive doc
 	$(MAKE) clean-build
 
 build :
@@ -31,9 +35,12 @@ build :
 	$(JAVAC) $(JAVAFLAGS) -sourcepath $(SOURCE) -cp $(BUILD) -d $(BUILD) $(SOURCE)/$(MAINFILE)
 
 archive : build
-	$(JAR) cvfe $(OUT) $(MAIN) -C $(BUILD) .
+	$(JAR) cvfe $(OUT) $(MAINPACKAGE).$(MAINCLASS) -C $(BUILD) .
 	echo "java -jar "$(OUT) > Runfile
 	chmod +x Runfile
+
+doc : clean-doc
+	$(JAVADOC) -private -sourcepath $(SOURCE) -d $(DOC) $(MAINPACKAGE)
 
 clean : clean-build clean-jar
 	
@@ -42,7 +49,10 @@ clean-build :
 
 clean-jar :
 	rm -f $(OUT)
-	rm -r Runfile
+	rm -f Runfile
+
+clean-doc :
+	rm -rf $(DOC)
 
 run :
-	java -jar $(OUT)
+	$(JAVA) -jar $(OUT)
