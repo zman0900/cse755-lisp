@@ -1,30 +1,48 @@
 # Java compiler
 JAVAC = javac
 
+# Java archiver
+JAR = jar
+
 # Java compiler flags
 JAVAFLAGS = -g
 
 # Source directory
 SOURCE = src
 
-# Output directory
-OUT = bin
+# Build directory
+BUILD = build
+
+# Output jar
+OUT = lisp.jar
 
 # Main class
-MAIN = 
-
-# Creating a .class file
-COMPILE = $(JAVAC) $(JAVAFLAGS) -sourcepath $(SOURCE) -classpath $(OUT) -d $(OUT)
+MAIN = com.cse755.LispInterpreter
+MAINFILE = com/cse755/LispInterpreter.java
 
 # The first target is the one that is executed when you invoke
 # "make". 
 
-all:
-	mkdir $(OUT)
-	$(COMPILE) $(SOURCE)/com/cse755/LispInterpreter.java
-	
-clean:
-	rm -rvf $(OUT)/*
+all : archive
+	$(MAKE) clean-build
 
-run:
-	java -classpath $(OUT) com.cse755.LispInterpreter
+build :
+	mkdir -p $(BUILD)
+	$(JAVAC) $(JAVAFLAGS) -sourcepath $(SOURCE) -cp $(BUILD) -d $(BUILD) $(SOURCE)/$(MAINFILE)
+
+archive : build
+	$(JAR) cvfe $(OUT) $(MAIN) -C $(BUILD) .
+	echo "java -jar "$(OUT) > Runfile
+	chmod +x Runfile
+
+clean : clean-build clean-jar
+	
+clean-build :
+	rm -rf $(BUILD)
+
+clean-jar :
+	rm -f $(OUT)
+	rm -r Runfile
+
+run :
+	java -jar $(OUT)
