@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.text.ParseException;
-
 import com.cse755.Token.TokenType;
 
 /**
@@ -16,7 +15,7 @@ import com.cse755.Token.TokenType;
 public class LispLexer {
 
 	private BufferedReader in;
-	private StreamTokenizer tk;
+	private IntStreamTokenizer tk;
 	private Token token;
 
 	/**
@@ -25,7 +24,7 @@ public class LispLexer {
 	 */
 	public LispLexer(InputStreamReader in) {
 		this.in = new BufferedReader(in);
-		this.tk = new StreamTokenizer(this.in);
+		this.tk = new IntStreamTokenizer(this.in);
 		this.tk.eolIsSignificant(false);
 
 		// Force all these to be tokens
