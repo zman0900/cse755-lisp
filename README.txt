@@ -15,4 +15,4 @@ Design Information:
 	  | <R>)
 
 <R> ::= <E> <R>
-	  | <R> ::= e
+	  | empty

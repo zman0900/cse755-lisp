@@ -8,44 +8,38 @@ import java.util.Locale;
  * @author Dan Ziemba
  */
 public class Token {
-	
+
 	/**
 	 * Possible types of Tokens. NUMBER and WORD are both atoms.
 	 * 
 	 * @author Dan Ziemba
 	 */
 	public enum TokenType {
-		NUMBER,
-		WORD,
-		DOT,
-		OPEN_PAREN,
-		CLOSE_PAREN,
-		WHITESPACE
+		NUMBER, WORD, DOT, OPEN_PAREN, CLOSE_PAREN, WHITESPACE
 	}
-	
+
 	/**
 	 * Actual token read from input.
 	 */
 	public final String value;
-	
+
 	/**
 	 * Type of the token.
 	 */
 	public final TokenType type;
-	
+
 	/**
 	 * Line number where token was found in input file.
 	 */
 	public final int lineNumber;
-	
+
 	/**
-	 * Numerical value of token. If token is not of type NUMBER, this will
-	 * be 0.
+	 * Numerical value of token. If token is not of type NUMBER, this will be 0.
 	 */
 	public final int numVal;
-	
+
 	/**
-	 * String value of token in all upper case.  If token is not if type WORD
+	 * String value of token in all upper case. If token is not if type WORD
 	 * this will be null.
 	 */
 	public final String wordVal;
@@ -53,8 +47,10 @@ public class Token {
 	/**
 	 * Create a new Token of type WORD.
 	 * 
-	 * @param value Word that the Token represents
-	 * @param lineNumber Source line number
+	 * @param value
+	 *            Word that the Token represents
+	 * @param lineNumber
+	 *            Source line number
 	 */
 	public Token(String value, int lineNumber) {
 		this.value = value;
@@ -63,12 +59,14 @@ public class Token {
 		this.numVal = 0;
 		this.wordVal = this.value.toUpperCase(Locale.ENGLISH);
 	}
-	
+
 	/**
 	 * Create a new Token of type NUMBER.
 	 * 
-	 * @param value Number the Token represents
-	 * @param lineNumber Source line number
+	 * @param value
+	 *            Number the Token represents
+	 * @param lineNumber
+	 *            Source line number
 	 */
 	public Token(int value, int lineNumber) {
 		this.value = Integer.toString(value);
@@ -77,13 +75,16 @@ public class Token {
 		this.numVal = value;
 		this.wordVal = null;
 	}
-	
+
 	/**
 	 * Create a new non WORD or NUMBER Token.
 	 * 
-	 * @param value Value the Token represents
-	 * @param type Type of the Token
-	 * @param lineNumber Source line number
+	 * @param value
+	 *            Value the Token represents
+	 * @param type
+	 *            Type of the Token
+	 * @param lineNumber
+	 *            Source line number
 	 */
 	public Token(char value, TokenType type, int lineNumber) {
 		this.value = String.valueOf(value);

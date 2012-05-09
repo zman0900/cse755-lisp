@@ -10,20 +10,28 @@ import java.text.ParseException;
  */
 public class LispInterpreter {
 
+	private LispParser parser;
+
 	/**
 	 * 
 	 */
-	public LispInterpreter() {
-		// TODO Auto-generated constructor stub
+	public LispInterpreter(LispParser parser) {
+		this.parser = parser;
 	}
 
 	/**
-	 * @param args Not used
+	 * Interprets and runs the Lisp program specified on stdin and displays the
+	 * output on stdout.
+	 * 
+	 * @param args
+	 *            Not used
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		LispLexer lex = new LispLexer(new InputStreamReader(System.in));
-		
+		LispParser parser = new LispParser(lex);
+		LispInterpreter interp = new LispInterpreter(parser);
+
+		// TODO: Remove testing code
 		try {
 			while (lex.tryAdvance()) {
 				System.out.println(lex.getToken());
