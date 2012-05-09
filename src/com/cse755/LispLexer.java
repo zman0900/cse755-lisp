@@ -25,7 +25,7 @@ public class LispLexer {
 	public LispLexer(InputStreamReader in) {
 		this.in = new BufferedReader(in);
 		this.tk = new IntStreamTokenizer(this.in);
-		this.tk.eolIsSignificant(false);
+		this.tk.eolIsSignificant(true);
 
 		// Force all these to be tokens
 		this.tk.ordinaryChar('(');
@@ -79,8 +79,9 @@ public class LispLexer {
 								tk.lineno());
 						return true;
 					case '.':
-						token = new Token('.', TokenType.DOT, tk.lineno());
-						return true;
+						throw new ParseException(
+								"Found unexpected symbol '.' on line "
+										+ tk.lineno(), 0);
 					case '+':
 						tokenValue = tk.nextToken();
 						if (tokenValue == StreamTokenizer.TT_NUMBER) {
@@ -103,16 +104,33 @@ public class LispLexer {
 						}
 					case ' ':
 					case '\t':
-						token = new Token(' ', TokenType.WHITESPACE,
-								tk.lineno());
-						// Skip rest of whitespace
+					case StreamTokenizer.TT_EOL:
+						// Is a dot next?
 						int val;
 						do {
 							val = tk.nextToken();
-						} while (val == ' ' || val == '\t');
-						// Don't skip next token
+							if (val == '.') {
+								// Found period, check for following space
+								val = tk.nextToken();
+								if (val == ' ' || val == '\t'
+										|| val == StreamTokenizer.TT_EOL) {
+									// Proper dot token
+									token = new Token('.', TokenType.DOT,
+											tk.lineno());
+									return true;
+								} else {
+									throw new ParseException(
+											"Found unexpected symbol '.' on line "
+													+ tk.lineno(), 0);
+								}
+							}
+							// else not dot, skip rest of space
+						} while (val == ' ' || val == '\t'
+								|| val == StreamTokenizer.TT_EOL);
+
+						// Got to a different token
 						tk.pushBack();
-						return true;
+						return this.tryAdvance();
 					default:
 						throw new ParseException("Found unexpected symbol '"
 								+ (char) tokenValue + "' on line "

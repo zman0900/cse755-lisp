@@ -15,7 +15,7 @@ public class Token {
 	 * @author Dan Ziemba
 	 */
 	public enum TokenType {
-		NUMBER, WORD, DOT, OPEN_PAREN, CLOSE_PAREN, WHITESPACE
+		NUMBER, WORD, DOT, OPEN_PAREN, CLOSE_PAREN
 	}
 
 	/**
