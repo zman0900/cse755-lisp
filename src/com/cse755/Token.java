@@ -21,7 +21,7 @@ public class Token {
 	/**
 	 * Actual token read from input.
 	 */
-	public final String value;
+	private final String value;
 
 	/**
 	 * Type of the token.
@@ -96,8 +96,7 @@ public class Token {
 
 	@Override
 	public String toString() {
-		return "Token [value=" + value + ", type=" + type + ", lineNumber="
-				+ lineNumber + ", numVal=" + numVal + ", wordVal=" + wordVal
-				+ "]";
+		return "Token [type=" + String.format("%1$#" + 11 + "s", type) + ", lineNumber=" + lineNumber
+				+ ", numVal=" + numVal + ", wordVal=" + wordVal + "]";
 	}
 }
