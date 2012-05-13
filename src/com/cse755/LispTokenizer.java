@@ -12,7 +12,7 @@ import com.cse755.Token.TokenType;
  * 
  * @author Dan Ziemba
  */
-public class LispLexer {
+public class LispTokenizer {
 
 	private BufferedReader in;
 	private IntStreamTokenizer tk;
@@ -22,7 +22,7 @@ public class LispLexer {
 	 * @param in
 	 *            A stream to read from stdin or a file
 	 */
-	public LispLexer(InputStreamReader in) {
+	public LispTokenizer(InputStreamReader in) {
 		this.in = new BufferedReader(in);
 		this.tk = new IntStreamTokenizer(this.in);
 		this.tk.eolIsSignificant(true);

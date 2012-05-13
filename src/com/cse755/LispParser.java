@@ -7,13 +7,13 @@ package com.cse755;
  */
 public class LispParser {
 
-	private LispLexer lex;
+	private LispTokenizer tk;
 
 	/**
 	 * 
 	 */
-	public LispParser(LispLexer lex) {
-		this.lex = lex;
+	public LispParser(LispTokenizer tk) {
+		this.tk = tk;
 	}
 
 }
