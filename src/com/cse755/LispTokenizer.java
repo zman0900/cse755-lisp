@@ -48,36 +48,37 @@ public class LispTokenizer {
 	}
 
 	/**
-	 * Advances the Lexer to the next {@link Token}.
+	 * Advances the Tokenizer to the next {@link Token}.
 	 * 
 	 * @return True if the next Token was successfully parsed
 	 * @throws ParseException
 	 */
-	public boolean tryAdvance() throws ParseException {
+	public void prepareNext() throws ParseException {
 		int tokenValue;
 		try {
 			tokenValue = tk.nextToken();
 			if (tokenValue == StreamTokenizer.TT_EOF) {
 				// No more tokens
-				return false;
+				token = new Token(tk.lineno());
+				return;
 			} else {
 				switch (tokenValue) {
 				case StreamTokenizer.TT_NUMBER:
 					createNumberToken(true, tk.nval);
-					return true;
+					return;
 				case StreamTokenizer.TT_WORD:
 					token = new Token(tk.sval, tk.lineno());
-					return true;
+					return;
 				default:
 					switch (tokenValue) {
 					case '(':
 						token = new Token('(', TokenType.OPEN_PAREN,
 								tk.lineno());
-						return true;
+						return;
 					case ')':
 						token = new Token(')', TokenType.CLOSE_PAREN,
 								tk.lineno());
-						return true;
+						return;
 					case '.':
 						throw new ParseException(
 								"Found unexpected symbol '.' on line "
@@ -86,7 +87,7 @@ public class LispTokenizer {
 						tokenValue = tk.nextToken();
 						if (tokenValue == StreamTokenizer.TT_NUMBER) {
 							createNumberToken(true, tk.nval);
-							return true;
+							return;
 						} else {
 							throw new ParseException(
 									"Found unexpected symbol '+' on line "
@@ -96,7 +97,7 @@ public class LispTokenizer {
 						tokenValue = tk.nextToken();
 						if (tokenValue == StreamTokenizer.TT_NUMBER) {
 							createNumberToken(false, tk.nval);
-							return true;
+							return;
 						} else {
 							throw new ParseException(
 									"Found unexpected symbol '-' on line "
@@ -117,7 +118,7 @@ public class LispTokenizer {
 									// Proper dot token
 									token = new Token('.', TokenType.DOT,
 											tk.lineno());
-									return true;
+									return;
 								} else {
 									throw new ParseException(
 											"Found unexpected symbol '.' on line "
@@ -130,7 +131,8 @@ public class LispTokenizer {
 
 						// Got to a different token
 						tk.pushBack();
-						return this.tryAdvance();
+						this.prepareNext();
+						return;
 					default:
 						throw new ParseException("Found unexpected symbol '"
 								+ (char) tokenValue + "' on line "
@@ -140,7 +142,8 @@ public class LispTokenizer {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			// IO error, this breaks things
+			return;
 		}
 	}
 

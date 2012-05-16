@@ -17,6 +17,13 @@ public class LispInterpreter {
 	 */
 	public LispInterpreter(LispParser parser) {
 		this.parser = parser;
+		try {
+			this.parser.getNextSExpression();
+			System.out.println("SECOND TRY");
+			this.parser.getNextSExpression();
+		} catch (ParseException e) {
+			System.out.println("ERROR: "+e.getLocalizedMessage());
+		}
 	}
 
 	/**
@@ -30,15 +37,6 @@ public class LispInterpreter {
 		LispTokenizer tk = new LispTokenizer(new InputStreamReader(System.in));
 		LispParser parser = new LispParser(tk);
 		LispInterpreter interp = new LispInterpreter(parser);
-
-		// TODO: Remove testing code
-		try {
-			while (tk.tryAdvance()) {
-				System.out.println(tk.getToken());
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

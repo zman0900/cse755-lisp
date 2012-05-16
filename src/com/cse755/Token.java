@@ -15,7 +15,7 @@ public class Token {
 	 * @author Dan Ziemba
 	 */
 	public enum TokenType {
-		NUMBER, WORD, DOT, OPEN_PAREN, CLOSE_PAREN
+		NUMBER, WORD, DOT, OPEN_PAREN, CLOSE_PAREN, EOF
 	}
 
 	/**
@@ -89,6 +89,17 @@ public class Token {
 	public Token(char value, TokenType type, int lineNumber) {
 		this.value = String.valueOf(value);
 		this.type = type;
+		this.lineNumber = lineNumber;
+		this.numVal = 0;
+		this.wordVal = null;
+	}
+	
+	/**
+	 * Create a new EOF Token.
+	 */
+	public Token(int lineNumber) {
+		this.value = null;
+		this.type = TokenType.EOF;
 		this.lineNumber = lineNumber;
 		this.numVal = 0;
 		this.wordVal = null;

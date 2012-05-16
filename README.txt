@@ -13,13 +13,13 @@ since my lexer handles ensuring required whitespace is where it belongs.
 LL(1) Grammar with numbered rules:
 1.	<S> ::= <E>
 2.	<E> ::= atom
-3.		  | (<X>
+3.	      | (<X>
 4.	<X> ::= )
-5.		  | <E><Y>
+5.	      | <E><Y>
 6.	<Y> ::= .<E>)
-7.		  | <R>)
+7.	      | <R>)
 8.	<R> ::= <E><R>
-9.		  | empty
+9.	      | empty
 
 I constructed an LL(1) parse table based on the info from wikipedia's LL parser
 page: http://en.wikipedia.org/wiki/LL_parser
@@ -39,9 +39,10 @@ X - { ), $, atom, (, . }
 Y - { ), $, atom, (, . }
 
 Parse table:
-	.	atom	)	(	$
-E		2			3
-R		8		9	8
-S		1			1
-X		5		4	5
-Y	6	7		7	7
+ |  .| atom|  )|  (|  $
+_|___|_____|___|___|____
+E|   |    2|   |  3|
+R|   |    8|  9|  8|
+S|   |    1|   |  1|
+X|   |    5|  4|  5|
+Y|  6|    7|  7|  7|
