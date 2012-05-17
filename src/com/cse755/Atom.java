@@ -9,32 +9,60 @@ import com.cse755.Token.TokenType;
  */
 public class Atom {
 
-	private Token t;
+	private String wordVal;
+	private Integer numVal;
+	private int lineNum;
 
 	/**
-	 * Create a new atom from the given token.
+	 * Create a new NIL atom
+	 * 
+	 * @param lineNumber
+	 *            line in source file
+	 */
+	public Atom(int lineNumber) {
+		this.lineNum = lineNumber;
+	}
+
+	/**
+	 * Create a new atom from the given token.  If the token is of type WORD and
+	 * its value is 'NIL' then a NIL token will be created.
 	 * 
 	 * @param t
 	 *            the token
 	 */
 	public Atom(Token t) {
-		this.t = t;
+		if (t.type == TokenType.NUMBER) {
+			this.numVal = Integer.valueOf(t.numVal);
+		} else if (t.type == TokenType.WORD) {
+			if (!t.wordVal.equalsIgnoreCase("NIL")) {
+				this.wordVal = t.wordVal;
+			}
+		}
+		this.lineNum = t.lineNumber;
 	}
 
 	public boolean isNumber() {
-		return t.type == TokenType.NUMBER;
+		return (numVal != null);
 	}
 
 	public boolean isWord() {
-		return t.type == TokenType.WORD;
+		return (wordVal != null);
+	}
+
+	public boolean isNil() {
+		return (numVal == null && wordVal == null);
 	}
 
 	public int numValue() {
-		return t.numVal;
+		return numVal.intValue();
 	}
 
 	public String wordValue() {
-		return t.wordVal;
+		return wordVal;
+	}
+
+	public int lineNumber() {
+		return lineNum;
 	}
 
 }

@@ -12,13 +12,14 @@ public class SExpression {
 	private Atom atom;
 	private SExpression leftChild;
 	private SExpression rightChild;
+	private SExpression parent;
 
 	/**
 	 * Create empty s-expression.
 	 */
 	public SExpression() {
 	}
-	
+
 	/**
 	 * Create an s-expression that is just an atom.
 	 */
@@ -29,7 +30,7 @@ public class SExpression {
 	/**
 	 * @return the atom
 	 */
-	public final Atom getAtom() {
+	public Atom getAtom() {
 		return atom;
 	}
 
@@ -37,7 +38,7 @@ public class SExpression {
 	 * @param atom
 	 *            the atom to set. Don't do this if left or right child are set.
 	 */
-	public final void setAtom(Atom atom) {
+	public void setAtom(Atom atom) {
 		this.atom = atom;
 		if (this.leftChild != null || this.rightChild != null) {
 			// TODO: remove warnings
@@ -48,7 +49,7 @@ public class SExpression {
 	/**
 	 * @return the leftChild
 	 */
-	public final SExpression getLeftChild() {
+	public SExpression getLeftChild() {
 		return leftChild;
 	}
 
@@ -56,7 +57,7 @@ public class SExpression {
 	 * @param leftChild
 	 *            the s-expression to set as left child
 	 */
-	public final void setLeftChild(SExpression leftChild) {
+	public void setLeftChild(SExpression leftChild) {
 		this.leftChild = leftChild;
 		if (this.atom != null) {
 			// TODO: remove warnings
@@ -67,7 +68,7 @@ public class SExpression {
 	/**
 	 * @return the rightChild
 	 */
-	public final SExpression getRightChild() {
+	public SExpression getRightChild() {
 		return rightChild;
 	}
 
@@ -75,12 +76,28 @@ public class SExpression {
 	 * @param rightChild
 	 *            the s-expression to set as right child
 	 */
-	public final void setRightChild(SExpression rightChild) {
+	public void setRightChild(SExpression rightChild) {
 		this.rightChild = rightChild;
 		if (this.atom != null) {
 			// TODO: remove warnings
 			System.out.println("WARNING: Right-child set on atom");
 		}
+	}
+
+	/**
+	 * @return the parent s-expression. A value of null indicates this is the
+	 *         root s-expression.
+	 */
+	public SExpression getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent
+	 *            the parent s-expression. Leave null to indicate this is root.
+	 */
+	public void setParent(SExpression parent) {
+		this.parent = parent;
 	}
 
 }
