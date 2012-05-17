@@ -13,6 +13,7 @@ public class SExpression {
 	private SExpression leftChild;
 	private SExpression rightChild;
 	private SExpression parent;
+	private boolean hasDot;
 
 	/**
 	 * Create empty s-expression.
@@ -104,6 +105,20 @@ public class SExpression {
 	 */
 	public void setParent(SExpression parent) {
 		this.parent = parent;
+	}
+
+	/**
+	 * @return True if this s-expression had a dot in the middle
+	 */
+	public boolean hasDot() {
+		return hasDot;
+	}
+
+	/**
+	 * @param hasDot True if this s-expression had a dot in the middle
+	 */
+	public void setHasDot(boolean hasDot) {
+		this.hasDot = hasDot;
 	}
 
 	@Override
