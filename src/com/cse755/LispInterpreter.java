@@ -18,9 +18,10 @@ public class LispInterpreter {
 	public LispInterpreter(LispParser parser) {
 		this.parser = parser;
 		try {
-			this.parser.getNextSExpression();
-			System.out.println("SECOND TRY");
-			this.parser.getNextSExpression();
+			SExpression se;
+			while ((se = this.parser.getNextSExpression()) != null) {
+			System.out.println(se);
+			}
 		} catch (ParseException e) {
 			System.out.println("ERROR: "+e.getLocalizedMessage());
 		}

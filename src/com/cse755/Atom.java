@@ -65,4 +65,11 @@ public class Atom {
 		return lineNum;
 	}
 
+	@Override
+	public String toString() {
+		return "Atom [" + (wordVal != null ? "wordVal=" + wordVal + ", " : "")
+				+ (numVal != null ? "numVal=" + numVal + ", " : "")
+				+ "lineNum=" + lineNum + "]";
+	}
+
 }

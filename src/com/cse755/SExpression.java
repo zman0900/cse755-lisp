@@ -54,11 +54,14 @@ public class SExpression {
 	}
 
 	/**
+	 * Set left child. Also sets left child's parent to this.
+	 * 
 	 * @param leftChild
 	 *            the s-expression to set as left child
 	 */
 	public void setLeftChild(SExpression leftChild) {
 		this.leftChild = leftChild;
+		this.leftChild.setParent(this);
 		if (this.atom != null) {
 			// TODO: remove warnings
 			System.out.println("WARNING: Left-child set on atom");
@@ -73,11 +76,14 @@ public class SExpression {
 	}
 
 	/**
+	 * Set right child. Also sets right child's parent to this.
+	 * 
 	 * @param rightChild
 	 *            the s-expression to set as right child
 	 */
 	public void setRightChild(SExpression rightChild) {
 		this.rightChild = rightChild;
+		this.rightChild.setParent(this);
 		if (this.atom != null) {
 			// TODO: remove warnings
 			System.out.println("WARNING: Right-child set on atom");
@@ -98,6 +104,13 @@ public class SExpression {
 	 */
 	public void setParent(SExpression parent) {
 		this.parent = parent;
+	}
+
+	@Override
+	public String toString() {
+		return "SExpression [" + (atom != null ? "atom=" + atom + ", " : "")
+				+ (leftChild != null ? "leftChild=" + leftChild + ", " : "")
+				+ (rightChild != null ? "rightChild=" + rightChild : "") + "]";
 	}
 
 }
