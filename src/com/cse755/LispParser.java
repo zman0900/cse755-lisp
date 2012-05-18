@@ -89,21 +89,17 @@ public class LispParser {
 		case TS_ATOM:
 			if (lastS == null) {
 				// First symbol was atom
-				System.out.println("Lone atom");
 				seWorking.setAtom(new Atom(currentT));
 			} else if (lastS == Symbol.TS_O_PAREN) {
 				// First atom inside '(', will be left child
-				System.out.println("Atom after (");
 				seWorking.setLeftChild(new SExpression(new Atom(currentT)));
 			} else if (lastS == Symbol.TS_ATOM || lastS == Symbol.TS_C_PAREN) {
 				// Last symbol was atom or ')', will be right child
-				System.out.println("Atom after atom or )");
 				seWorking.setRightChild(new SExpression());
 				seWorking = seWorking.getRightChild();
 				seWorking.setLeftChild(new SExpression(new Atom(currentT)));
 			} else if (lastS == Symbol.TS_DOT) {
 				// Last symbol was '.', put direct in right child
-				System.out.println("Atom after dot");
 				seWorking.setRightChild(new SExpression(new Atom(currentT)));
 				// Climb tree to lowest parent with empty right child
 				while (seWorking.getRightChild() != null
@@ -113,25 +109,20 @@ public class LispParser {
 			}
 			break;
 		case TS_DOT:
-			System.out.println("Has dot");
 			seWorking.setHasDot(true);
 			break;
 		case TS_C_PAREN:
 			if (lastS == Symbol.TS_O_PAREN) {
 				// Empty '()' == NIL
-				System.out.println(") after (");
 				seWorking.setAtom(new Atom(currentT.lineNumber));
 			} else {
 				// Must be following an atom or ')'
 				if (seWorking.getRightChild() == null) {
 					if (!seWorking.hasDot()) {
-						System.out.println(") after other, no dot");
 						// Don't re-set, could have already been set because of
 						// '.'
 						seWorking.setRightChild(new SExpression(new Atom(
 								currentT.lineNumber)));
-					} else {
-						System.out.println(") after other, has dot");
 					}
 				}
 				// Climb tree to lowest parent with empty right child
@@ -144,25 +135,22 @@ public class LispParser {
 		case TS_O_PAREN:
 			if (lastS == Symbol.TS_ATOM || lastS == Symbol.TS_C_PAREN) {
 				// Should be on right side, need 2 levels
-				System.out.println("( after atom or )");
 				seWorking.setRightChild(new SExpression());
 				seWorking = seWorking.getRightChild();
 				seWorking.setLeftChild(new SExpression());
 				seWorking = seWorking.getLeftChild();
 			} else if (lastS == Symbol.TS_O_PAREN) {
 				// Should be on left side
-				System.out.println("( after (");
 				seWorking.setLeftChild(new SExpression());
 				seWorking = seWorking.getLeftChild();
 			} else if (lastS == Symbol.TS_DOT) {
 				// Should be on right side
-				System.out.println("( after dot");
 				seWorking.setRightChild(new SExpression());
 				seWorking = seWorking.getRightChild();
 			}
 			break;
 		case TS_EOS:
-			System.out.println("EOS");
+
 			break;
 
 		default:
@@ -262,8 +250,6 @@ public class LispParser {
 			currentT = tk.getToken();
 			if (Symbol.lexer(currentT).equals(ss.peek())) {
 				// Matched symbol with top of stack
-				System.out
-						.println("Matched symbols: " + Symbol.lexer(currentT));
 				tk.prepareNext();
 				ss.pop();
 				buildSexpression();
