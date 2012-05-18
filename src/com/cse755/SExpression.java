@@ -123,9 +123,14 @@ public class SExpression {
 
 	@Override
 	public String toString() {
+		StringBuilder tabs = new StringBuilder();
+		SExpression temp = this;
+		while ((temp = temp.getParent()) != null) {
+			tabs.append('\t');
+		}
 		return "SExpression [" + (atom != null ? "atom=" + atom + ", " : "")
-				+ (leftChild != null ? "leftChild=" + leftChild + ", " : "")
-				+ (rightChild != null ? "rightChild=" + rightChild : "") + "]";
+				+ (leftChild != null ? "\n"+tabs+"\tleftChild=" + leftChild + ", " : "")
+				+ (rightChild != null ? "\n"+tabs+"\trightChild=" + rightChild : "") + "]";
 	}
 
 }
