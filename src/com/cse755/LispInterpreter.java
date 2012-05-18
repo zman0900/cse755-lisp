@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import sun.org.mozilla.javascript.xml.XMLLib.Factory;
-
 /**
  * The actual interpreter.
  * 
@@ -16,6 +14,9 @@ import sun.org.mozilla.javascript.xml.XMLLib.Factory;
 public class LispInterpreter {
 
 	private class EvalException extends Exception {
+
+		private static final long serialVersionUID = 2395220565168403304L;
+
 		public EvalException(String message) {
 			super(message);
 		}
@@ -110,8 +111,7 @@ public class LispInterpreter {
 				} else if (car.wordValue().equals("COND")) {
 					if (exp.getRightChild().getLeftChild() != null
 							&& exp.getRightChild().getLeftChild().listLength() > 0) {
-						return evcon(exp.getRightChild().clone(),
-								variables);
+						return evcon(exp.getRightChild().clone(), variables);
 					} else {
 						throw new EvalException("COND expects a non-empty list");
 					}
