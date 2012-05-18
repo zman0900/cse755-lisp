@@ -11,6 +11,7 @@ import java.text.ParseException;
 public class LispInterpreter {
 
 	private LispParser parser;
+	private static boolean debug = false;
 
 	/**
 	 * Creates a new LispInterpreter that reads s-expressions from the specified
@@ -32,8 +33,13 @@ public class LispInterpreter {
 			SExpression se;
 			// Main read-eval-print loop
 			while ((se = this.parser.getNextSExpression()) != null) {
+				if (debug) {
+					System.out.println("INPUT:");
+					System.out.println(se);
+					se.print();
+					System.out.println("OUTPUT:");
+				}
 				SExpression result = eval(se);
-				System.out.println(result);
 				result.print();
 			}
 		} catch (ParseException e) {
@@ -50,9 +56,14 @@ public class LispInterpreter {
 	 * output on stdout.
 	 * 
 	 * @param args
-	 *            Not used
+	 *            Use -d to enable debug output.
 	 */
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			if (args[0].equalsIgnoreCase("-d")) {
+				debug = true;
+			}
+		}
 		LispTokenizer tk = new LispTokenizer(new InputStreamReader(System.in));
 		LispParser parser = new LispParser(tk);
 		LispInterpreter interp = new LispInterpreter(parser);
