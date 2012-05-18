@@ -30,6 +30,8 @@ public class SExpression {
 	}
 
 	/**
+	 * The atom this s-expression represents. Null if this is not an atom.
+	 * 
 	 * @return the atom
 	 */
 	public Atom getAtom() {
@@ -37,8 +39,11 @@ public class SExpression {
 	}
 
 	/**
+	 * Set this s-expression to represent an atom. Don't do this if left or
+	 * right child are set.
+	 * 
 	 * @param atom
-	 *            the atom to set. Don't do this if left or right child are set.
+	 *            the atom to set.
 	 */
 	public void setAtom(Atom atom) {
 		this.atom = atom;
@@ -49,14 +54,17 @@ public class SExpression {
 	}
 
 	/**
-	 * @return the leftChild
+	 * The left child of this s-expression. Null if this is an atom.
+	 * 
+	 * @return the left child
 	 */
 	public SExpression getLeftChild() {
 		return leftChild;
 	}
 
 	/**
-	 * Set left child. Also sets left child's parent to this.
+	 * Set left child. Also sets left child's parent to this. Don't do this if
+	 * atom is set.
 	 * 
 	 * @param leftChild
 	 *            the s-expression to set as left child
@@ -71,14 +79,17 @@ public class SExpression {
 	}
 
 	/**
-	 * @return the rightChild
+	 * The right child of this s-expression. Null if this is an atom.
+	 * 
+	 * @return the right child
 	 */
 	public SExpression getRightChild() {
 		return rightChild;
 	}
 
 	/**
-	 * Set right child. Also sets right child's parent to this.
+	 * Set right child. Also sets right child's parent to this. Don't do this if
+	 * atom is set.
 	 * 
 	 * @param rightChild
 	 *            the s-expression to set as right child
@@ -93,29 +104,37 @@ public class SExpression {
 	}
 
 	/**
-	 * @return the parent s-expression. A value of null indicates this is the
-	 *         root s-expression.
+	 * The parent of this s-expression. A value of null indicates this is the
+	 * root s-expression.
+	 * 
+	 * @return the parent s-expression
 	 */
 	public SExpression getParent() {
 		return parent;
 	}
 
 	/**
+	 * Set the parent of this s-expression. Leave null to indicate this is root.
+	 * 
 	 * @param parent
-	 *            the parent s-expression. Leave null to indicate this is root.
+	 *            the parent s-expression
 	 */
 	public void setParent(SExpression parent) {
 		this.parent = parent;
 	}
 
 	/**
-	 * @return True if this s-expression had a dot in the middle
+	 * True if the parsed s-expression had a dot in the middle.
+	 * 
+	 * @return did this have a dot
 	 */
 	public boolean hasDot() {
 		return hasDot;
 	}
 
 	/**
+	 * Set to true if the parsed s-expression had a dot in the middle.
+	 * 
 	 * @param hasDot
 	 *            True if this s-expression had a dot in the middle
 	 */
@@ -139,6 +158,9 @@ public class SExpression {
 						+ rightChild : "") + "]";
 	}
 
+	/**
+	 * Prints the s-expression to stdout in the standard format.
+	 */
 	public void print() {
 		if (this.atom != null) {
 			atom.print();
@@ -167,10 +189,20 @@ public class SExpression {
 			System.out.println();
 	}
 
+	/**
+	 * True if this s-expression contains only an atom.
+	 * 
+	 * @return is this an atom
+	 */
 	public boolean isAtom() {
 		return (atom != null);
 	}
 
+	/**
+	 * True if this s-expression is in list format.
+	 * 
+	 * @return is this a list
+	 */
 	public boolean isList() {
 		if (atom != null && atom.isNil()) {
 			isList = Boolean.TRUE;

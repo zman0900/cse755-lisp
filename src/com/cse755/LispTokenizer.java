@@ -19,6 +19,8 @@ public class LispTokenizer {
 	private Token token;
 
 	/**
+	 * Create a new LispTokenizer that reads from the given input.
+	 * 
 	 * @param in
 	 *            A stream to read from stdin or a file
 	 */
@@ -50,7 +52,6 @@ public class LispTokenizer {
 	/**
 	 * Advances the Tokenizer to the next {@link Token}.
 	 * 
-	 * @return True if the next Token was successfully parsed
 	 * @throws ParseException
 	 */
 	public void prepareNext() throws ParseException {

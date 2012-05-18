@@ -10,7 +10,7 @@ import java.util.Locale;
 public class Token {
 
 	/**
-	 * Possible types of Tokens. NUMBER and WORD are both atoms.
+	 * Enum of possible types of Tokens. NUMBER and WORD are both atoms.
 	 * 
 	 * @author Dan Ziemba
 	 */

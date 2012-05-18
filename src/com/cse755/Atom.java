@@ -41,26 +41,56 @@ public class Atom {
 		this.lineNum = t.lineNumber;
 	}
 
+	/**
+	 * True if atom is a number.
+	 * 
+	 * @return is atom a number
+	 */
 	public boolean isNumber() {
 		return (numVal != null);
 	}
 
+	/**
+	 * True if atom is a word.
+	 * 
+	 * @return is atom a word
+	 */
 	public boolean isWord() {
 		return (wordVal != null);
 	}
 
+	/**
+	 * True if atom is NIL.
+	 * 
+	 * @return is atom NIL
+	 */
 	public boolean isNil() {
 		return (numVal == null && wordVal == null);
 	}
 
-	public int numValue() {
-		return numVal.intValue();
+	/**
+	 * Value of atom as a Integer. Null if atom is not a number
+	 * 
+	 * @return the number value
+	 */
+	public Integer numValue() {
+		return numVal;
 	}
 
+	/**
+	 * Value of atom as a String. Null if atom is not a word.
+	 * 
+	 * @return the word value
+	 */
 	public String wordValue() {
 		return wordVal;
 	}
 
+	/**
+	 * Line number the atom was encountered or generated on.
+	 * 
+	 * @return the line number
+	 */
 	public int lineNumber() {
 		return lineNum;
 	}
@@ -72,6 +102,9 @@ public class Atom {
 				+ "lineNum=" + lineNum + "]";
 	}
 
+	/**
+	 * Prints the value of this atom to stdout
+	 */
 	public void print() {
 		if (isNil()) {
 			System.out.print("NIL");

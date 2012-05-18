@@ -15,6 +15,11 @@ import com.cse755.Token.TokenType;
  */
 public class LispParser {
 
+	/**
+	 * Enum of possible type of terminal and non-terminal symbols.
+	 * 
+	 * @author Dan Ziemba
+	 */
 	public enum Symbol {
 		// Terminal symbols
 		TS_ATOM, TS_DOT, TS_C_PAREN, TS_O_PAREN, TS_INVALID, TS_EOS,
@@ -222,6 +227,13 @@ public class LispParser {
 		buildParseTable();
 	}
 
+	/**
+	 * Parses and returns the next valid s-expression from input. Throws a
+	 * ParseException if an incomplete or invalid s-expression is encountered.
+	 * 
+	 * @return the s-expression
+	 * @throws ParseException
+	 */
 	public SExpression getNextSExpression() throws ParseException {
 		// Init stack
 		ss = new Stack<LispParser.Symbol>();
