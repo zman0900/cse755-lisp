@@ -16,6 +16,7 @@ public class SExpression {
 	private boolean hasDot;
 	private Boolean isList = null;
 	private Integer listLength = null;
+	private Boolean isFlatList = null;
 
 	/**
 	 * Create empty s-expression.
@@ -207,11 +208,11 @@ public class SExpression {
 	public boolean isList() {
 		if (isList == null) {
 			if (atom != null && atom.isNil()) {
-				isList = Boolean.TRUE;
+				isList = true;
 			} else if (rightChild != null && rightChild.isList()) {
-				isList = Boolean.TRUE;
+				isList = true;
 			} else {
-				isList = Boolean.FALSE;
+				isList = false;
 			}
 		}
 		return isList.booleanValue();
@@ -230,20 +231,26 @@ public class SExpression {
 				} else {
 					listLength = 1 + rightChild.listLength();
 				}
-
-				// if (rightChild != null && rightChild.isAtom()
-				// && rightChild.getAtom().isNil()) {
-				// listLength = 1;
-				// } else if (rightChild != null) {
-				// listLength = 1 + rightChild.listLength();
-				// } else {
-				// listLength = -2;
-				// }
 			} else {
 				listLength = -1;
 			}
 		}
 		return listLength.intValue();
+	}
+
+	public boolean isFlatList() {
+		if (isFlatList == null) {
+			if (isList()) {
+				if (atom != null && atom.isNil()) {
+					isFlatList = true;
+				} else {
+					isFlatList = (leftChild.isAtom() & rightChild.isFlatList());
+				}
+			} else {
+				isFlatList = false;
+			}
+		}
+		return isFlatList.booleanValue();
 	}
 
 }
