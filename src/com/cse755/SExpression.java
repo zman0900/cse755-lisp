@@ -144,7 +144,8 @@ public class SExpression {
 			atom.print();
 		} else if (isList()) {
 			boolean isListRoot = false;
-			isListRoot = (parent == null || (parent != null && !parent.isList()));
+			// First node of list is always the left child of its parent
+			isListRoot = (parent == null || (parent != null && parent.leftChild == this));
 			if (isListRoot)
 				System.out.print('(');
 			leftChild.print();
