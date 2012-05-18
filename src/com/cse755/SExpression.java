@@ -14,6 +14,7 @@ public class SExpression {
 	private SExpression rightChild;
 	private SExpression parent;
 	private boolean hasDot;
+	private Boolean isList = null;
 
 	/**
 	 * Create empty s-expression.
@@ -115,7 +116,8 @@ public class SExpression {
 	}
 
 	/**
-	 * @param hasDot True if this s-expression had a dot in the middle
+	 * @param hasDot
+	 *            True if this s-expression had a dot in the middle
 	 */
 	public void setHasDot(boolean hasDot) {
 		this.hasDot = hasDot;
@@ -128,9 +130,55 @@ public class SExpression {
 		while ((temp = temp.getParent()) != null) {
 			tabs.append('\t');
 		}
-		return "SExpression [" + (atom != null ? "atom=" + atom + ", " : "")
-				+ (leftChild != null ? "\n"+tabs+"\tleftChild=" + leftChild + ", " : "")
-				+ (rightChild != null ? "\n"+tabs+"\trightChild=" + rightChild : "") + "]";
+		return (isList() ? "*" : "")
+				+ "SExpression ["
+				+ (atom != null ? "atom=" + atom + ", " : "")
+				+ (leftChild != null ? "\n" + tabs + "\tleftChild=" + leftChild
+						+ ", " : "")
+				+ (rightChild != null ? "\n" + tabs + "\trightChild="
+						+ rightChild : "") + "]";
+	}
+
+	public void print() {
+		if (this.atom != null) {
+			atom.print();
+		} else if (isList()) {
+			boolean isListRoot = false;
+			isListRoot = (parent == null || (parent != null && !parent.isList()));
+			if (isListRoot)
+				System.out.print('(');
+			leftChild.print();
+			if (!(rightChild.isAtom() && rightChild.getAtom().isNil())) {
+				System.out.print(' ');
+				rightChild.print();
+			}
+			if (isListRoot)
+				System.out.print(')');
+		} else {
+			System.out.print('(');
+			leftChild.print();
+			System.out.print(" . ");
+			rightChild.print();
+			System.out.print(')');
+		}
+		// Print newline if this is root
+		if (parent == null)
+			System.out.println();
+	}
+
+	public boolean isAtom() {
+		return (atom != null);
+	}
+
+	public boolean isList() {
+		if (atom != null && atom.isNil()) {
+			isList = Boolean.TRUE;
+		} else if (rightChild != null && rightChild.isList()) {
+			isList = Boolean.TRUE;
+		} else {
+			isList = Boolean.FALSE;
+		}
+		return isList.booleanValue();
 	}
 
 }

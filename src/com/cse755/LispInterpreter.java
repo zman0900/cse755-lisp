@@ -34,6 +34,7 @@ public class LispInterpreter {
 			while ((se = this.parser.getNextSExpression()) != null) {
 				SExpression result = eval(se);
 				System.out.println(result);
+				result.print();
 			}
 		} catch (ParseException e) {
 			System.out.println("ERROR: " + e.getLocalizedMessage());

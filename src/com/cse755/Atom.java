@@ -24,7 +24,7 @@ public class Atom {
 	}
 
 	/**
-	 * Create a new atom from the given token.  If the token is of type WORD and
+	 * Create a new atom from the given token. If the token is of type WORD and
 	 * its value is 'NIL' then a NIL token will be created.
 	 * 
 	 * @param t
@@ -70,6 +70,16 @@ public class Atom {
 		return "Atom [" + (wordVal != null ? "wordVal=" + wordVal + ", " : "")
 				+ (numVal != null ? "numVal=" + numVal + ", " : "")
 				+ "lineNum=" + lineNum + "]";
+	}
+
+	public void print() {
+		if (isNil()) {
+			System.out.print("NIL");
+		} else if (isWord()) {
+			System.out.print(wordVal);
+		} else {
+			System.out.print(numVal);
+		}
 	}
 
 }
