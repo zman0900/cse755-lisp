@@ -46,3 +46,10 @@ R|   |    8|  9|  8|
 S|   |    1|   |  1|
 X|   |    5|  4|  5|
 Y|  6|    7|  7|  7|
+
+
+As the parser matches terminal symbols, it constructs an s-expression that is 
+stored in a binary tree format.  These s-expressions are then read by the 
+interpreter class and executed in a very similar manner to what was described in
+class for the lisp interpreter implemented in lisp, although this interpreter
+also performs error checking.

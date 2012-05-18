@@ -7,7 +7,7 @@ package com.cse755;
  * 
  * @author Dan Ziemba
  */
-public class SExpression {
+public class SExpression implements Cloneable {
 
 	private Atom atom;
 	private SExpression leftChild;
@@ -29,6 +29,32 @@ public class SExpression {
 	 */
 	public SExpression(Atom atom) {
 		this.atom = atom;
+	}
+
+	@Override
+	public SExpression clone() {
+		try {
+			SExpression copy = (SExpression) super.clone();
+			copy.parent = null;
+			if (atom != null)
+				copy.atom = atom.clone();
+			if (leftChild != null) {
+				copy.leftChild = leftChild.clone();
+				copy.leftChild.parent = copy;
+			}
+			if (rightChild != null) {
+				copy.rightChild = rightChild.clone();
+				copy.rightChild.parent = copy;
+			}
+			// Force recompute of these
+			copy.isList = null;
+			copy.listLength = null;
+			copy.isFlatList = null;
+			return copy;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

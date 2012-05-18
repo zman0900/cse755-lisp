@@ -7,20 +7,25 @@ import com.cse755.Token.TokenType;
  * 
  * @author Dan Ziemba
  */
-public class Atom {
+public class Atom implements Cloneable {
 
 	private String wordVal;
 	private Integer numVal;
 	private int lineNum;
 
 	/**
-	 * Create a new NIL atom
+	 * Create a new NIL or T atom
 	 * 
+	 * @param isTrue
+	 *            is atom T or NIL
 	 * @param lineNumber
 	 *            line in source file
 	 */
-	public Atom(int lineNumber) {
+	public Atom(boolean isTrue, int lineNumber) {
 		this.lineNum = lineNumber;
+		if (isTrue) {
+			wordVal = String.valueOf('T');
+		}
 	}
 
 	/**
@@ -41,6 +46,21 @@ public class Atom {
 		this.lineNum = t.lineNumber;
 	}
 
+	@Override
+	public Atom clone() {
+		try {
+			Atom copy = (Atom) super.clone();
+			if (wordVal != null)
+				copy.wordVal = new String(wordVal);
+			if (numVal != null)
+				copy.numVal = new Integer(numVal);
+			return copy;
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	/**
 	 * True if atom is a number.
 	 * 
@@ -56,7 +76,7 @@ public class Atom {
 	 * @return is atom a word
 	 */
 	public boolean isWord() {
-		return (wordVal != null);
+		return (wordVal != null && !wordVal.equals("T"));
 	}
 
 	/**
@@ -66,6 +86,15 @@ public class Atom {
 	 */
 	public boolean isNil() {
 		return (numVal == null && wordVal == null);
+	}
+
+	/**
+	 * True if atom is T.
+	 * 
+	 * @return is atom T
+	 */
+	public boolean isTrue() {
+		return (wordVal != null && wordVal.equals("T"));
 	}
 
 	/**
@@ -108,6 +137,8 @@ public class Atom {
 	public String getPrintable() {
 		if (isNil()) {
 			return "NIL";
+		} else if (isTrue()) {
+			return "T";
 		} else if (isWord()) {
 			return wordVal;
 		} else {

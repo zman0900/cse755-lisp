@@ -114,14 +114,17 @@ public class LispParser {
 		case TS_C_PAREN:
 			if (lastS == Symbol.TS_O_PAREN) {
 				// Empty '()' == NIL
-				seWorking.setAtom(new Atom(currentT.lineNumber));
+				seWorking.setAtom(new Atom(false, currentT.lineNumber));
+				if (seWorking.getParent() != null) {
+					seWorking = seWorking.getParent();
+				}
 			} else {
 				// Must be following an atom or ')'
 				if (seWorking.getRightChild() == null) {
 					if (!seWorking.hasDot()) {
 						// Don't re-set, could have already been set because of
 						// '.'
-						seWorking.setRightChild(new SExpression(new Atom(
+						seWorking.setRightChild(new SExpression(new Atom(false,
 								currentT.lineNumber)));
 					}
 				}
