@@ -108,7 +108,13 @@ public class LispInterpreter {
 						throw new EvalException("QUOTE expects exactly 1 list");
 					}
 				} else if (car.wordValue().equals("COND")) {
-					// TODO: implement evcon
+					if (exp.getRightChild().getLeftChild() != null
+							&& exp.getRightChild().getLeftChild().listLength() > 0) {
+						return evcon(exp.getRightChild().clone(),
+								variables);
+					} else {
+						throw new EvalException("COND expects a non-empty list");
+					}
 				} else if (car.wordValue().equals("DEFUN")) {
 					return defineFunction(exp.clone());
 				} else {
@@ -122,9 +128,6 @@ public class LispInterpreter {
 						+ " is not a function name");
 			}
 		}
-
-		throw new EvalException("Couldn't evaluate expression: "
-				+ exp.getPrintable());
 	}
 
 	private SExpression evlist(SExpression exp,
@@ -142,6 +145,34 @@ public class LispInterpreter {
 		} else {
 			throw new EvalException("Expected a list, instead got '"
 					+ exp.getPrintable() + "'");
+		}
+	}
+
+	private SExpression evcon(SExpression exp,
+			Map<String, SExpression> variables) throws EvalException {
+		if (!exp.getLeftChild().isList()) {
+			throw new EvalException("COND expects a non-empty list of the "
+					+ "form '((test stmt) (test stmt) ...)'");
+		}
+		SExpression result = eval(exp.getLeftChild().getLeftChild().clone(),
+				variables);
+		if (!(result.isAtom() && (result.getAtom().isNil() || result.getAtom()
+				.isTrue()))) {
+			throw new EvalException("COND test did not evaluate to T or NIL");
+		}
+		if (!(!exp.getLeftChild().getRightChild().isAtom() && exp
+				.getLeftChild().getRightChild().getLeftChild() != null)) {
+			throw new EvalException(
+					"COND does not have a valid statement to execute");
+		}
+		// COND good
+		if (result.getAtom().isTrue()) {
+			// Got T
+			return eval(exp.getLeftChild().getRightChild().getLeftChild()
+					.clone(), variables);
+		} else {
+			// Got NIL, try next
+			return evcon(exp.getRightChild().clone(), variables);
 		}
 	}
 
@@ -453,7 +484,8 @@ public class LispInterpreter {
 							"Wrong number of parameters for function "
 									+ function.wordValue());
 				}
-				return eval(funcBody.clone(), addPairs(funcParams, params, variables));
+				return eval(funcBody.clone(),
+						addPairs(funcParams, params, variables));
 			} else {
 				// Function not defined
 				throw new EvalException(function.wordValue()
@@ -461,13 +493,16 @@ public class LispInterpreter {
 			}
 		}
 	}
-	
-	private Map<String, SExpression> addPairs(SExpression formals, SExpression actuals, Map<String, SExpression> variables) {
-		Map<String, SExpression> result = new HashMap<String, SExpression>(variables);
+
+	private Map<String, SExpression> addPairs(SExpression formals,
+			SExpression actuals, Map<String, SExpression> variables) {
+		Map<String, SExpression> result = new HashMap<String, SExpression>(
+				variables);
 		SExpression fWorking = formals.clone();
 		SExpression aWorking = actuals.clone();
 		while (fWorking.listLength() > 0) {
-			result.put(fWorking.getLeftChild().getAtom().wordValue(), aWorking.getLeftChild());
+			result.put(fWorking.getLeftChild().getAtom().wordValue(),
+					aWorking.getLeftChild());
 			fWorking = fWorking.getRightChild().clone();
 			aWorking = aWorking.getRightChild().clone();
 		}
