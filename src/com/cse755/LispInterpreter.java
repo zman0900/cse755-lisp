@@ -3,8 +3,10 @@ package com.cse755;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The actual interpreter.
@@ -26,6 +28,7 @@ public class LispInterpreter {
 
 	private LispParser parser;
 	private Map<String, SExpression> functions;
+	private Set<String> reservedWords;
 
 	/**
 	 * Creates a new LispInterpreter that reads s-expressions from the specified
@@ -38,6 +41,26 @@ public class LispInterpreter {
 	public LispInterpreter(LispParser parser) {
 		this.parser = parser;
 		this.functions = new HashMap<String, SExpression>();
+		reservedWords = new HashSet<String>();
+		reservedWords.add("T");
+		reservedWords.add("NIL");
+		reservedWords.add("CAR");
+		reservedWords.add("CDR");
+		reservedWords.add("CONS");
+		reservedWords.add("ATOM");
+		reservedWords.add("EQ");
+		reservedWords.add("NULL");
+		reservedWords.add("INT");
+		reservedWords.add("PLUS");
+		reservedWords.add("MINUS");
+		reservedWords.add("TIMES");
+		reservedWords.add("QUOTIENT");
+		reservedWords.add("REMAINDER");
+		reservedWords.add("LESS");
+		reservedWords.add("GREATER");
+		reservedWords.add("COND");
+		reservedWords.add("QUOTE");
+		reservedWords.add("DEFUN");
 	}
 
 	/**
@@ -192,6 +215,11 @@ public class LispInterpreter {
 			throw new EvalException("Invalid DEFUN at line "
 					+ exp.getLeftChild().getAtom().lineNumber()
 					+ ", name should be a non-numeric atom");
+		} else if (reservedWords.contains(inner.getLeftChild().getAtom()
+				.wordValue())) {
+			throw new EvalException("Invalid DEFUN at line "
+					+ exp.getLeftChild().getAtom().lineNumber()
+					+ ", name is reserved");
 		} else {
 			// Function looks good
 			SExpression func = inner.getRightChild().clone();
