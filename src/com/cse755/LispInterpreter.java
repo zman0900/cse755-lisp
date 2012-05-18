@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import sun.org.mozilla.javascript.xml.XMLLib.Factory;
+
 /**
  * The actual interpreter.
  * 
@@ -308,9 +310,12 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
-					Atom a = new Atom(left.getAtom().numValue() + right.getAtom().numValue());
+					Atom a = new Atom(left.getAtom().numValue()
+							+ right.getAtom().numValue());
 					result.setAtom(a);
 					return result;
 				} else {
@@ -323,9 +328,12 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
-					Atom a = new Atom(left.getAtom().numValue() - right.getAtom().numValue());
+					Atom a = new Atom(left.getAtom().numValue()
+							- right.getAtom().numValue());
 					result.setAtom(a);
 					return result;
 				} else {
@@ -338,9 +346,12 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
-					Atom a = new Atom(left.getAtom().numValue() * right.getAtom().numValue());
+					Atom a = new Atom(left.getAtom().numValue()
+							* right.getAtom().numValue());
 					result.setAtom(a);
 					return result;
 				} else {
@@ -353,13 +364,17 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
-					Atom a = new Atom(left.getAtom().numValue() / right.getAtom().numValue());
+					Atom a = new Atom(left.getAtom().numValue()
+							/ right.getAtom().numValue());
 					result.setAtom(a);
 					return result;
 				} else {
-					throw new EvalException("QUOTIENT params should be integers");
+					throw new EvalException(
+							"QUOTIENT params should be integers");
 				}
 			}
 		} else if (function.wordValue().equals("REMAINDER")) {
@@ -368,13 +383,17 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
-					Atom a = new Atom(left.getAtom().numValue() % right.getAtom().numValue());
+					Atom a = new Atom(left.getAtom().numValue()
+							% right.getAtom().numValue());
 					result.setAtom(a);
 					return result;
 				} else {
-					throw new EvalException("REMAINDER params should be integers");
+					throw new EvalException(
+							"REMAINDER params should be integers");
 				}
 			}
 		} else if (function.wordValue().equals("LESS")) {
@@ -383,7 +402,9 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
 					Atom a;
 					if (left.getAtom().numValue() < right.getAtom().numValue()) {
@@ -403,7 +424,9 @@ public class LispInterpreter {
 			} else {
 				SExpression left = params.getLeftChild();
 				SExpression right = params.getRightChild().getLeftChild();
-				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+				if (left.isAtom() && right.isAtom()
+						&& left.getAtom().isNumber()
+						&& right.getAtom().isNumber()) {
 					SExpression result = new SExpression();
 					Atom a;
 					if (left.getAtom().numValue() > right.getAtom().numValue()) {
@@ -419,11 +442,36 @@ public class LispInterpreter {
 			}
 		} else {
 			// User defined function
-
+			if (functions.containsKey(function.wordValue())) {
+				// Function defined
+				SExpression func = functions.get(function.wordValue());
+				SExpression funcParams = func.getLeftChild().clone();
+				SExpression funcBody = func.getRightChild().getLeftChild()
+						.clone();
+				if (funcParams.listLength() != params.listLength()) {
+					throw new EvalException(
+							"Wrong number of parameters for function "
+									+ function.wordValue());
+				}
+				return eval(funcBody.clone(), addPairs(funcParams, params, variables));
+			} else {
+				// Function not defined
+				throw new EvalException(function.wordValue()
+						+ " is not a function name");
+			}
 		}
-
-		throw new EvalException("Function '" + function.wordValue()
-				+ "' is not implemented");
+	}
+	
+	private Map<String, SExpression> addPairs(SExpression formals, SExpression actuals, Map<String, SExpression> variables) {
+		Map<String, SExpression> result = new HashMap<String, SExpression>(variables);
+		SExpression fWorking = formals.clone();
+		SExpression aWorking = actuals.clone();
+		while (fWorking.listLength() > 0) {
+			result.put(fWorking.getLeftChild().getAtom().wordValue(), aWorking.getLeftChild());
+			fWorking = fWorking.getRightChild().clone();
+			aWorking = aWorking.getRightChild().clone();
+		}
+		return result;
 	}
 
 	/**
