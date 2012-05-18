@@ -161,32 +161,31 @@ public class SExpression {
 	/**
 	 * Prints the s-expression to stdout in the standard format.
 	 */
-	public void print() {
+	public String getPrintable() {
+		StringBuilder out = new StringBuilder();
 		if (this.atom != null) {
-			atom.print();
+			out.append(atom.getPrintable());
 		} else if (isList()) {
 			boolean isListRoot = false;
 			// First node of list is always the left child of its parent
 			isListRoot = (parent == null || (parent != null && parent.leftChild == this));
 			if (isListRoot)
-				System.out.print('(');
-			leftChild.print();
+				out.append('(');
+			out.append(leftChild.getPrintable());
 			if (!(rightChild.isAtom() && rightChild.getAtom().isNil())) {
-				System.out.print(' ');
-				rightChild.print();
+				out.append(' ');
+				out.append(rightChild.getPrintable());
 			}
 			if (isListRoot)
-				System.out.print(')');
+				out.append(')');
 		} else {
-			System.out.print('(');
-			leftChild.print();
-			System.out.print(" . ");
-			rightChild.print();
-			System.out.print(')');
+			out.append('(');
+			out.append(leftChild.getPrintable());
+			out.append(" . ");
+			out.append(rightChild.getPrintable());
+			out.append(')');
 		}
-		// Print newline if this is root
-		if (parent == null)
-			System.out.println();
+		return out.toString();
 	}
 
 	/**

@@ -105,13 +105,13 @@ public class Atom {
 	/**
 	 * Prints the value of this atom to stdout
 	 */
-	public void print() {
+	public String getPrintable() {
 		if (isNil()) {
-			System.out.print("NIL");
+			return "NIL";
 		} else if (isWord()) {
-			System.out.print(wordVal);
+			return wordVal;
 		} else {
-			System.out.print(numVal);
+			return String.valueOf(numVal);
 		}
 	}
 
