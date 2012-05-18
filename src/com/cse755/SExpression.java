@@ -15,6 +15,7 @@ public class SExpression {
 	private SExpression parent;
 	private boolean hasDot;
 	private Boolean isList = null;
+	private Integer listLength = null;
 
 	/**
 	 * Create empty s-expression.
@@ -149,8 +150,9 @@ public class SExpression {
 		while ((temp = temp.getParent()) != null) {
 			tabs.append('\t');
 		}
-		return (isList() ? "*" : "")
-				+ "SExpression ["
+		return "SExpression l="
+				+ listLength()
+				+ " ["
 				+ (atom != null ? "atom=" + atom + ", " : "")
 				+ (leftChild != null ? "\n" + tabs + "\tleftChild=" + leftChild
 						+ ", " : "")
@@ -203,14 +205,45 @@ public class SExpression {
 	 * @return is this a list
 	 */
 	public boolean isList() {
-		if (atom != null && atom.isNil()) {
-			isList = Boolean.TRUE;
-		} else if (rightChild != null && rightChild.isList()) {
-			isList = Boolean.TRUE;
-		} else {
-			isList = Boolean.FALSE;
+		if (isList == null) {
+			if (atom != null && atom.isNil()) {
+				isList = Boolean.TRUE;
+			} else if (rightChild != null && rightChild.isList()) {
+				isList = Boolean.TRUE;
+			} else {
+				isList = Boolean.FALSE;
+			}
 		}
 		return isList.booleanValue();
+	}
+
+	/**
+	 * Returns the lenght of the list, or -1 if this is not a list.
+	 * 
+	 * @return the list length
+	 */
+	public int listLength() {
+		if (listLength == null) {
+			if (isList()) {
+				if (atom != null && atom.isNil()) {
+					listLength = 0;
+				} else {
+					listLength = 1 + rightChild.listLength();
+				}
+
+				// if (rightChild != null && rightChild.isAtom()
+				// && rightChild.getAtom().isNil()) {
+				// listLength = 1;
+				// } else if (rightChild != null) {
+				// listLength = 1 + rightChild.listLength();
+				// } else {
+				// listLength = -2;
+				// }
+			} else {
+				listLength = -1;
+			}
+		}
+		return listLength.intValue();
 	}
 
 }
