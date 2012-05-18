@@ -101,11 +101,6 @@ public class LispParser {
 			} else if (lastS == Symbol.TS_DOT) {
 				// Last symbol was '.', put direct in right child
 				seWorking.setRightChild(new SExpression(new Atom(currentT)));
-				// Climb tree to lowest parent with empty right child
-				while (seWorking.getRightChild() != null
-						&& seWorking.getParent() != null) {
-					seWorking = seWorking.getParent();
-				}
 			}
 			break;
 		case TS_DOT:
