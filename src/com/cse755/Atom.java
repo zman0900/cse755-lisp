@@ -46,6 +46,17 @@ public class Atom implements Cloneable {
 		this.lineNum = t.lineNumber;
 	}
 
+	/**
+	 * Create a new Atom that is a number. Line number will be invalid.
+	 * 
+	 * @param number
+	 *            the number
+	 */
+	public Atom(int number) {
+		this.lineNum = -1;
+		this.numVal = number;
+	}
+
 	@Override
 	public Atom clone() {
 		try {

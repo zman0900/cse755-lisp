@@ -97,7 +97,7 @@ public class LispInterpreter {
 					throw new EvalException("NIL is not a function name");
 				} else if (car.isNumber()) {
 					throw new EvalException(car.numValue()
-							+ " is not a function naem");
+							+ " is not a function name");
 				} else if (car.wordValue().equals("QUOTE")) {
 					if (exp.getRightChild().getLeftChild() != null
 							&& exp.getRightChild().listLength() == 1) {
@@ -303,19 +303,120 @@ public class LispInterpreter {
 				return result;
 			}
 		} else if (function.wordValue().equals("PLUS")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("PLUS expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a = new Atom(left.getAtom().numValue() + right.getAtom().numValue());
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("PLUS params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("MINUS")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("MINUS expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a = new Atom(left.getAtom().numValue() - right.getAtom().numValue());
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("MINUS params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("TIMES")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("TIMES expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a = new Atom(left.getAtom().numValue() * right.getAtom().numValue());
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("TIMES params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("QUOTIENT")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("QUOTIENT expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a = new Atom(left.getAtom().numValue() / right.getAtom().numValue());
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("QUOTIENT params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("REMAINDER")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("REMAINDER expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a = new Atom(left.getAtom().numValue() % right.getAtom().numValue());
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("REMAINDER params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("LESS")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("LESS expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a;
+					if (left.getAtom().numValue() < right.getAtom().numValue()) {
+						a = new Atom(true, left.getAtom().lineNumber());
+					} else {
+						a = new Atom(false, left.getAtom().lineNumber());
+					}
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("LESS params should be integers");
+				}
+			}
 		} else if (function.wordValue().equals("GREATER")) {
-
+			if (params.listLength() != 2) {
+				throw new EvalException("GREATER expects exactly 2 params");
+			} else {
+				SExpression left = params.getLeftChild();
+				SExpression right = params.getRightChild().getLeftChild();
+				if (left.isAtom() && right.isAtom() && left.getAtom().isNumber() && right.getAtom().isNumber()) {
+					SExpression result = new SExpression();
+					Atom a;
+					if (left.getAtom().numValue() > right.getAtom().numValue()) {
+						a = new Atom(true, left.getAtom().lineNumber());
+					} else {
+						a = new Atom(false, left.getAtom().lineNumber());
+					}
+					result.setAtom(a);
+					return result;
+				} else {
+					throw new EvalException("GREATER params should be integers");
+				}
+			}
 		} else {
 			// User defined function
 
